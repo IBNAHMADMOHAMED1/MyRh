@@ -2,21 +2,24 @@ package io.rh.myrh.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import net.minidev.json.annotate.JsonIgnore;
 
 @Entity
 @Data
 public class Offer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
-    String uid;
-    String title;
-    String description;
-    String domain;
-    String salary;
-    String education_level;
+    private Long id;
+    private String uid;
+    private String title;
+    private String description;
+    private String domain;
+    private String salary;
+    private String education_level;
+    @Enumerated(EnumType.STRING)
+    private Status status;
 
-    @ManyToOne
-    @JoinColumn(name = "company_id")
-    Company company;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "company_id", nullable = false)
+    private Company company;
 }
