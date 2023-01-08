@@ -1,2 +1,29 @@
-package io.rh.myrh.dto;public class OfferDto {
+package io.rh.myrh.dto;
+
+import io.rh.myrh.entity.Company;
+import lombok.*;
+import org.springframework.validation.annotation.Validated;
+
+@Setter
+@Getter
+@RequiredArgsConstructor
+public class OfferDto {
+    private String uid;
+    private String title;
+    private String description;
+    private String domain;
+    private String salary;
+    private String education_level;
+    private Company company;
 }
+/*
+    {
+        "uid": "offer-1",
+        "title": "Software Engineer",
+        "description": "We are looking for a software engineer",
+        "domain": "IT",
+        "salary": "1000",
+        "education_level": "Bachelor",
+        "company_id": "company-1"
+    }
+ */
