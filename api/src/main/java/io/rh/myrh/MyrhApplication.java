@@ -6,14 +6,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.PropertySource;
 
 @SpringBootApplication
-@PropertySource("classpath:application.properties")
 public class MyrhApplication {
-
-    @Value("${JWT_SECRET_KEY}")
-    public static String SECRET_KEY;
     public static void main(String[] args) {
-        System.out.println(SECRET_KEY);
-//        SpringApplication.run(MyrhApplication.class, args);
+       SpringApplication.run(MyrhApplication.class, args);
     }
 
 }
