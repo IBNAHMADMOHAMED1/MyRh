@@ -19,7 +19,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Agent implements UserDetails {
+public class Agent implements UserDetails { // we need to override the loadUserByUsername method
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
