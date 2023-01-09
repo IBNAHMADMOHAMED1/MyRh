@@ -103,5 +103,10 @@ public class OfferServiceImp implements OfferService {
         return offerRepo.findAllByCompany_Id(id, PageRequest.of(pageNumber, pageSize));
     }
 
+    @Override
+    public Page<Offer> searchOffers(String query, String domain, String educationLevel, String salary, String location, int pageNumber, int pageSize) {
+        return offerRepo.search(query, query, domain, salary, educationLevel, Status.ACCEPTED, location, PageRequest.of(pageNumber, pageSize));
+    }
+
 
 }

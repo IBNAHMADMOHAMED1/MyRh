@@ -18,6 +18,7 @@ public class Offer {
     private String education_level;
     @Enumerated(EnumType.STRING)
     private Status status;
+    private String location;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "company_id", nullable = false)
