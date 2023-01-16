@@ -16,6 +16,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/api/v1/")
 @RequiredArgsConstructor
@@ -23,12 +25,25 @@ public class OfferController {
     private final OfferServiceImp offerService;
     @GetMapping("private/offers")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<Page<Offer>> getAllOffers(
+    public ResponseEntity<OffersResponse> getAllOffers(
+            @RequestParam(defaultValue = "all") String status,
             @RequestParam(defaultValue = "0") int pageNumber,
             @RequestParam(defaultValue = "2") int size
     ) {
-        Page<Offer> page = offerService.getAllOffers(pageNumber, size);
-        return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(page);
+        OffersResponse offersResponse = new OffersResponse();
+        Status offerStatus;
+        switch (status) {
+            case "ACCEPTED" -> offerStatus = Status.ACCEPTED;
+            case "PENDING" -> offerStatus = Status.PENDING;
+            case "REJECTED" -> offerStatus = Status.REJECTED;
+            default -> offerStatus = null;
+        }
+
+        Page<Offer> page = offerService.getAllOffers(offerStatus,pageNumber, size);
+        offersResponse.setSuccess(true);
+        offersResponse.setMessage("Offers retrieved successfully");
+        offersResponse.setData(page);
+        return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(offersResponse);
     }
     @GetMapping("public/offers")
     public ResponseEntity<OffersResponse> getOffers(
@@ -61,16 +76,20 @@ public class OfferController {
     // get offer by id
     @GetMapping("public/offer/{id}")
     public ResponseEntity<OfferResponse> getOfferById(@PathVariable Long id) {
-        Offer offer = offerService.getOfferById(id).get();
         OfferResponse offerResponse = new OfferResponse();
-        if (offer.getTitle() == null) {
-            offerResponse.setMessage("Offer not found");
+        if (id == null || id < 0) {
+            offerResponse.setMessage("Invalid offer id");
             offerResponse.setSuccess(false);
             return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(offerResponse);
         }
-        offerResponse.setSuccess(true);
-        offerResponse.setData(offer);
-        offerResponse.setMessage("Offer found");
+        Optional<Offer> offer = offerService.getOfferById(id);
+        if (offer.isPresent()) {
+            offerResponse.setSuccess(true);
+            offerResponse.setData(offer.get());
+            return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(offerResponse);
+        }
+        offerResponse.setSuccess(false);
+        offerResponse.setMessage("Offer not found");
         return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(offerResponse);
     }
     // get offer by company
@@ -134,18 +153,17 @@ public class OfferController {
             return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(offerResponse);
         } else {
             Status offerStatus;
-            if (status.equals("ACCEPTED")) {
-                offerStatus = Status.ACCEPTED;
-            } else if (status.equals("PENDING")) {
-                offerStatus = Status.PENDING;
-            } else if (status.equals("REJECTED")) {
-                offerStatus = Status.REJECTED;
-            } else {
-                Page<Offer> page = offerService.getAllOffersByCompanyId(pageNumber, size, offerService.getCompany().getId());
-                offerResponse.setMessage("All offers");
-                offerResponse.setSuccess(true);
-                offerResponse.setData(page);
-                return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(offerResponse);
+            switch (status) {
+                case "ACCEPTED" -> offerStatus = Status.ACCEPTED;
+                case "PENDING" -> offerStatus = Status.PENDING;
+                case "REJECTED" -> offerStatus = Status.REJECTED;
+                default -> {
+                    Page<Offer> page = offerService.getAllOffersByCompanyId(pageNumber, size, offerService.getCompany().getId());
+                    offerResponse.setMessage("All offers");
+                    offerResponse.setSuccess(true);
+                    offerResponse.setData(page);
+                    return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(offerResponse);
+                }
             }
             Page<Offer> page = offerService.getAllOffersByCompanyWithFilter(pageNumber, size, offerStatus);
             offerResponse.setMessage("All offers");
@@ -167,6 +185,21 @@ public class OfferController {
         offerResponse.setMessage("All offers");
         offerResponse.setSuccess(true);
         offerResponse.setData(offers);
+        return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(offerResponse);
+    }
+
+
+    @PutMapping("public/offer/update/view/{id}")
+    public ResponseEntity<OfferResponse> updateOffer(@PathVariable Long id) {
+        OfferResponse offerResponse = new OfferResponse();
+        Boolean isUpdated = offerService.updateOfferView(id);
+        if (isUpdated) {
+            offerResponse.setSuccess(true);
+            offerResponse.setMessage("Offer updated");
+            return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(offerResponse);
+        }
+        offerResponse.setSuccess(false);
+        offerResponse.setMessage("Offer not updated");
         return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(offerResponse);
     }
 

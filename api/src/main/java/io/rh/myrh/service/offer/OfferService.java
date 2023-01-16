@@ -14,7 +14,7 @@ public interface OfferService {
     void acceptOffer(Long id);
     void rejectOffer(Long id);
     void deleteOffer(Long id);
-    Page<Offer> getAllOffers(int pageNumber, int pageSize);
+    Page<Offer> getAllOffers(Status status,int pageNumber, int pageSize);
     Page<Offer> getAllOffersByCompany(int pageNumber, int pageSize, Long id);
 
     Page<Offer> getAllAcceptedOffers(int pageNumber, int pageSize);
@@ -24,6 +24,8 @@ public interface OfferService {
     Page<Offer> getAllOffersByCompanyWithFilter(int pageNumber, int pageSize, Status status);
     Page<Offer> getAllOffersByCompanyId(int pageNumber, int pageSize, Long id);
      Page<Offer> searchOffers(String title, String domain, String location, int pageNumber, int size);
+
+     Boolean updateOfferView(Long id);
 
 
 

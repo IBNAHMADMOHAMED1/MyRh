@@ -17,6 +17,7 @@ import java.util.Optional;
 public interface OfferRepo extends JpaRepository<Offer, Long> {
     Optional<Offer> findByUid(String uid);
 
+
     @Override
     Page<Offer> findAll(Pageable pageable);
 
@@ -31,9 +32,6 @@ public interface OfferRepo extends JpaRepository<Offer, Long> {
         // title, domain, location, stataus, pageNumber, size -> using or operator filter
    // @Query("SELECT o FROM Offer o WHERE o.title LIKE %:title% OR o.domain LIKE %:domain% OR o.location LIKE %:location% OR o.status LIKE %:status%")
     //Page<Offer> searchOffers(@Param("title") String title, @Param("domain") String domain, @Param("location") String location, @Param("status") Status status, Pageable pageable);
-
-
-
     @Query("SELECT o FROM Offer o WHERE " +
 
             "(:status IS NULL OR o.status = :status) AND " +
@@ -46,6 +44,8 @@ public interface OfferRepo extends JpaRepository<Offer, Long> {
             @Param("status") Status status,
             @Param("location") String location,
             Pageable pageable);
+
+
 
 }
 

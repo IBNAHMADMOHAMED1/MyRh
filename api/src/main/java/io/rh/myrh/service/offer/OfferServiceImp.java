@@ -37,6 +37,7 @@ public class OfferServiceImp implements OfferService {
         offer.setDomain(offerRequest.getDomain());
         offer.setSalary(offerRequest.getSalary());
         offer.setEducation_level(offerRequest.getEducation_level());
+        offer.setLocation(offerRequest.getLocation());
         offer.setStatus(Status.PENDING);
         return offerRepo.save(offer);
     }
@@ -66,7 +67,11 @@ public class OfferServiceImp implements OfferService {
 
     @Override
     public void rejectOffer(Long id) {
-
+        Optional<Offer> offer = offerRepo.findById(id);
+        if (offer.isPresent()) {
+            offer.get().setStatus(Status.REJECTED);
+            offerRepo.save(offer.get());
+        }
     }
 
     @Override
@@ -74,9 +79,12 @@ public class OfferServiceImp implements OfferService {
 
     }
     @Override
-    public Page<Offer> getAllOffers(int pageNumber, int pageSize){
+    public Page<Offer> getAllOffers(Status status,int pageNumber, int pageSize){
         PageRequest pageRequest = PageRequest.of(pageNumber, pageSize);
-        return offerRepo.findAll(pageRequest);
+        if (status == null) {
+            return offerRepo.findAll(pageRequest);
+        }
+        return offerRepo.findAllByStatus(status, pageRequest);
     }
 
     @Override
@@ -114,6 +122,17 @@ public class OfferServiceImp implements OfferService {
     // searchOffers(title, domain, location, pageNumber, size);
     public Page<Offer> searchOffers(String title, String domain, String location, int pageNumber, int size) {
         return offerRepo.search(title, domain, Status.ACCEPTED, location, PageRequest.of(pageNumber, size));
+    }
+
+    @Override
+    public Boolean updateOfferView(Long id) {
+        Optional<Offer> offer = offerRepo.findByIdAndStatus(id, Status.ACCEPTED);
+        if (offer.isPresent()) {
+            offer.get().setViews(offer.get().getViews() + 1);
+            offerRepo.save(offer.get());
+            return true;
+        }
+        return false;
     }
 
 

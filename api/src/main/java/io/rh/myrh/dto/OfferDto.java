@@ -15,6 +15,7 @@ public class OfferDto {
     private String salary;
     private String education_level;
     private Company company;
+    private String location;
 }
 /*
     {

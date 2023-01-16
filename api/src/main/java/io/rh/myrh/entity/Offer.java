@@ -19,6 +19,7 @@ public class Offer {
     @Enumerated(EnumType.STRING)
     private Status status;
     private String location;
+    private int views;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "company_id", nullable = false)
