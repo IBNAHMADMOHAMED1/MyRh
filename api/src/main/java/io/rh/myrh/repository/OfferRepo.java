@@ -28,24 +28,24 @@ public interface OfferRepo extends JpaRepository<Offer, Long> {
 
     Page<Offer> findAllByCompany_Id(Long id, Pageable pageable);
 
-        @Query("SELECT o FROM Offer o WHERE " +
+        // title, domain, location, stataus, pageNumber, size -> using or operator filter
+   // @Query("SELECT o FROM Offer o WHERE o.title LIKE %:title% OR o.domain LIKE %:domain% OR o.location LIKE %:location% OR o.status LIKE %:status%")
+    //Page<Offer> searchOffers(@Param("title") String title, @Param("domain") String domain, @Param("location") String location, @Param("status") Status status, Pageable pageable);
 
-                "(:title IS NULL OR o.title LIKE %:title%) AND " +
-                "(:description IS NULL OR o.description LIKE %:description%) AND " +
-                "(:domain IS NULL OR o.domain = :domain) AND " +
-                "(:salary IS NULL OR o.salary = :salary) AND " +
-                "(:educationLevel IS NULL OR o.education_level = :educationLevel) AND " +
-                "(:status IS NULL OR o.status = :status) AND " +
-                "(:location IS NULL OR o.location = :location)")
-        Page<Offer> search(
-                           @Param("title") String title,
-                           @Param("description") String description,
-                           @Param("domain") String domain,
-                           @Param("salary") String salary,
-                           @Param("educationLevel") String educationLevel,
-                           @Param("status") Status status,
-                           @Param("location") String location,
-                           Pageable pageable);
+
+
+    @Query("SELECT o FROM Offer o WHERE " +
+
+            "(:status IS NULL OR o.status = :status) AND " +
+            "(:title IS NULL OR o.title LIKE %:title%) AND " +
+            "(:domain IS NULL OR o.domain = :domain) AND " +
+            "(:location IS NULL OR o.location = :location)")
+    Page<Offer> search(
+            @Param("title") String title,
+            @Param("domain") String domain,
+            @Param("status") Status status,
+            @Param("location") String location,
+            Pageable pageable);
 
 }
 

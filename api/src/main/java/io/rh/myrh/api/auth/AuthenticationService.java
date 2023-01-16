@@ -3,6 +3,7 @@ package io.rh.myrh.api.auth;
 import io.rh.myrh.confg.AppConfig;
 import io.rh.myrh.dto.AuthenticationRequest;
 import io.rh.myrh.dto.AuthenticationResponse;
+import io.rh.myrh.dto.Data;
 import io.rh.myrh.dto.RegisterRequest;
 import io.rh.myrh.entity.Agent;
 import io.rh.myrh.entity.Company;
@@ -29,7 +30,7 @@ public class AuthenticationService {
        private final CloudinaryProvider cloudinaryProvider;
        private final AuthenticationManager authenticationManager;
        private final AppConfig appConfig;
-        public AuthenticationResponse register(RegisterRequest request) {
+        public AuthenticationResponse register(RegisterRequest request, MultipartFile file) {
             var  company = new Company();
             company.setUid(generateUid(request.getName()));
             company.setName(request.getName());
@@ -38,15 +39,21 @@ public class AuthenticationService {
             company.setPhoneNo(request.getPhoneNumber());
             company.setEmail(request.getEmail());
             company.setPassword(passwordEncoder.encode(request.getPassword()));
-            MultipartFile file = request.getImage();
+           // MultipartFile file = request.getImage();
             String url = cloudinaryProvider.uploadImage(file);
             company.setImageUri(url);
             company.setRole(Role.ROLE_COMPANY);
             companyRepo.save(company);
             var user = new User(company.getEmail(), company.getPassword(), company.getAuthorities());
             var token = jwtProvider.generateToken(user, company,"company");
+            Data data = new Data();
+            data.setEmail(company.getEmail());
+            data.setToken(token);
+            data.setWho("company");
             return  AuthenticationResponse.builder()
-                    .token(token)
+                    .message("Company registered successfully")
+                    .success(true)
+                    .data(data)
                     .build();
         }
     private String generateUid(String name) {
@@ -56,7 +63,7 @@ public class AuthenticationService {
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
         appConfig.setWhoWantToLogin(request.getWho());
         authenticationManager.authenticate(
-            new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
+                new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
         );
         Object o = null;
         User user = null;
@@ -70,8 +77,14 @@ public class AuthenticationService {
             o = company;
         }
         var token = jwtProvider.generateToken(user, o, request.getWho());
+        Data loginResponse = new Data();
+        loginResponse.setToken(token);
+        loginResponse.setWho(request.getWho());
+        loginResponse.setEmail(request.getEmail());
         return AuthenticationResponse.builder()
-                .token(token)
+                .message("Login successful")
+                .success(true)
+                .data(loginResponse)
                 .build();
     }
 }

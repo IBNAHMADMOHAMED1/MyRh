@@ -23,7 +23,8 @@ public interface OfferService {
     Page<Offer> getAllRejectedOffers(int pageNumber, int pageSize);
     Page<Offer> getAllOffersByCompanyWithFilter(int pageNumber, int pageSize, Status status);
     Page<Offer> getAllOffersByCompanyId(int pageNumber, int pageSize, Long id);
-    Page<Offer> searchOffers(String query, String domain, String educationLevel, String salary, String location, int pageNumber, int pageSize);
+     Page<Offer> searchOffers(String title, String domain, String location, int pageNumber, int size);
+
 
 
 }

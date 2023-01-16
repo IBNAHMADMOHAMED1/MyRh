@@ -1,6 +1,8 @@
 package io.rh.myrh.api.offer;
 
 import io.rh.myrh.dto.OfferDto;
+import io.rh.myrh.dto.OfferResponse;
+import io.rh.myrh.dto.OffersResponse;
 import io.rh.myrh.entity.Offer;
 import io.rh.myrh.entity.Status;
 import io.rh.myrh.repository.CompanyRepo;
@@ -28,31 +30,48 @@ public class OfferController {
         Page<Offer> page = offerService.getAllOffers(pageNumber, size);
         return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(page);
     }
-    // public offers list offer accept
     @GetMapping("public/offers")
-    public ResponseEntity<Page<Offer>> getOffers(
+    public ResponseEntity<OffersResponse> getOffers(
             @RequestParam(defaultValue = "0") int pageNumber,
             @RequestParam(defaultValue = "2") int size
     ) {
         Page<Offer> page = offerService.getAllAcceptedOffers(pageNumber, size);
-        return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(page);
+        OffersResponse offerResponse = new OffersResponse();
+        offerResponse.setSuccess(true);
+        offerResponse.setData(page);
+        return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(offerResponse);
     }
 
     @PostMapping("private/offer/create")
     @PreAuthorize("hasRole('ROLE_COMPANY')")
-    public ResponseEntity<Offer> postOffers(@RequestBody OfferDto offerRequest) {
-        if (offerRequest.getUid() == null || offerRequest.getTitle() == null || offerRequest.getDescription() == null || offerRequest.getDomain() == null || offerRequest.getSalary() == null || offerRequest.getEducation_level() == null) {
-            return ResponseEntity.badRequest().build();
+    public ResponseEntity<OfferResponse> postOffers(@RequestBody OfferDto offerRequest) {
+        OfferResponse offerResponse = new OfferResponse();
+        if (offerRequest.getTitle() == null || offerRequest.getDescription() == null || offerRequest.getDomain() == null || offerRequest.getSalary() == null || offerRequest.getEducation_level() == null) {
+            offerResponse.setMessage("Please fill all the fields");
+            offerResponse.setSuccess(false);
+            return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(offerResponse);
         }
         Offer newOffer = offerService.saveOffer(offerRequest);
-        return ResponseEntity.ok(newOffer);
+        offerResponse.setMessage("Offer created successfully");
+        offerResponse.setSuccess(true);
+        offerResponse.setData(newOffer);
+        return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(offerResponse);
     }
 
     // get offer by id
     @GetMapping("public/offer/{id}")
-    public ResponseEntity<Offer> getOfferById(@PathVariable Long id) {
+    public ResponseEntity<OfferResponse> getOfferById(@PathVariable Long id) {
         Offer offer = offerService.getOfferById(id).get();
-        return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(offer);
+        OfferResponse offerResponse = new OfferResponse();
+        if (offer.getTitle() == null) {
+            offerResponse.setMessage("Offer not found");
+            offerResponse.setSuccess(false);
+            return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(offerResponse);
+        }
+        offerResponse.setSuccess(true);
+        offerResponse.setData(offer);
+        offerResponse.setMessage("Offer found");
+        return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(offerResponse);
     }
     // get offer by company
     @GetMapping("public/offers/{company_id}")
@@ -99,15 +118,20 @@ public class OfferController {
     // http://localhost:8080/api/v1/private/offers/company?status=ACCEPTED&pageNumber=0&size=2
     @GetMapping("private/offers/company")
     @PreAuthorize("hasRole('ROLE_COMPANY')")
-    public ResponseEntity<Page<Offer>> getAllOffersByCompany(
+    public ResponseEntity<OffersResponse> getAllOffersByCompany(
             @RequestParam(defaultValue = "0") int pageNumber,
             @RequestParam(defaultValue = "2") int size,
             @RequestParam(defaultValue = "all") String status
     ) {
+        OffersResponse offerResponse = new OffersResponse();
+
         if (status.equals("all")) {
             Long company_id = offerService.getCompany().getId();
             Page<Offer> page = offerService.getAllOffersByCompanyId(pageNumber, size, company_id);
-            return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(page);
+            offerResponse.setMessage("All offers");
+            offerResponse.setSuccess(true);
+            offerResponse.setData(page);
+            return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(offerResponse);
         } else {
             Status offerStatus;
             if (status.equals("ACCEPTED")) {
@@ -118,23 +142,32 @@ public class OfferController {
                 offerStatus = Status.REJECTED;
             } else {
                 Page<Offer> page = offerService.getAllOffersByCompanyId(pageNumber, size, offerService.getCompany().getId());
-                return ResponseEntity.badRequest().contentType(MediaType.APPLICATION_JSON).body(page);
+                offerResponse.setMessage("All offers");
+                offerResponse.setSuccess(true);
+                offerResponse.setData(page);
+                return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(offerResponse);
             }
             Page<Offer> page = offerService.getAllOffersByCompanyWithFilter(pageNumber, size, offerStatus);
-            return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(page);
+            offerResponse.setMessage("All offers");
+            offerResponse.setSuccess(true);
+            offerResponse.setData(page);
+            return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(offerResponse);
         }
     }
     @GetMapping("public/offers/search")
-    // http://localhost:8080/api/v1/public/offers/search?title=java&domain=IT&education_level=MASTER&salary=1000
-    public  Page<Offer> searchOffers(
-            @RequestParam(name = "q", required = false) String query, // query - search by title and description
+    public  ResponseEntity<OffersResponse> searchOffers(
+            @RequestParam(defaultValue = "0") int pageNumber,
+            @RequestParam(defaultValue = "2") int size,
+            @RequestParam(name = "title", required = false) String title,
             @RequestParam(name = "domain", required = false) String domain,
-            @RequestParam(name = "education_level", required = false) String educationLevel,
-            @RequestParam(name = "salary", required = false) String salary,
-            @RequestParam(name = "location", required = false) String location,
-            @RequestParam(name = "page", defaultValue = "0") int page,
-            @RequestParam(name = "size", defaultValue = "20") int size) {
-       return offerService.searchOffers(query, domain, educationLevel, salary, location, page, size);
+            @RequestParam(name = "location", required = false) String location) {
+        // http://localhost:8080/api/v1/public/offers/search?pageNumber=0&size=2&title=java&domain=IT&location=London
+       Page<Offer> offers = offerService.searchOffers(title, domain, location, pageNumber, size);
+        OffersResponse offerResponse = new OffersResponse();
+        offerResponse.setMessage("All offers");
+        offerResponse.setSuccess(true);
+        offerResponse.setData(offers);
+        return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(offerResponse);
     }
 
 }

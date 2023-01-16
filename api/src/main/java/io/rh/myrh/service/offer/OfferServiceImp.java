@@ -31,7 +31,7 @@ public class OfferServiceImp implements OfferService {
         Company company = getCompany();
         Offer offer = new Offer();
         offer.setCompany(company);
-        offer.setUid(offerRequest.getUid());
+        offer.setUid(getUid(company.getName()));
         offer.setTitle(offerRequest.getTitle());
         offer.setDescription(offerRequest.getDescription());
         offer.setDomain(offerRequest.getDomain());
@@ -40,6 +40,13 @@ public class OfferServiceImp implements OfferService {
         offer.setStatus(Status.PENDING);
         return offerRepo.save(offer);
     }
+
+    private String getUid(String companyName) {
+        String tow = companyName.substring(0, 2);
+        String uid = tow + Math.random();
+        return tow + "-" + uid;
+    }
+
 
     public Company getCompany() {
         String token = jwtProvider.getToken();
@@ -104,8 +111,9 @@ public class OfferServiceImp implements OfferService {
     }
 
     @Override
-    public Page<Offer> searchOffers(String query, String domain, String educationLevel, String salary, String location, int pageNumber, int pageSize) {
-        return offerRepo.search(query, query, domain, salary, educationLevel, Status.ACCEPTED, location, PageRequest.of(pageNumber, pageSize));
+    // searchOffers(title, domain, location, pageNumber, size);
+    public Page<Offer> searchOffers(String title, String domain, String location, int pageNumber, int size) {
+        return offerRepo.search(title, domain, Status.ACCEPTED, location, PageRequest.of(pageNumber, size));
     }
 
 
