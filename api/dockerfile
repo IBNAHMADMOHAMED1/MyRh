@@ -1,0 +1,11 @@
+FROM openjdk:14-alpine
+
+ENV POSTGRES_DB=myrh
+ENV POSTGRES_USER=postgresuser
+ENV POSTGRES_PASSWORD=VZWds6dP0nYQwcDaAmHLrbR47q3lgGvD
+
+RUN apk add --no-cache postgresql-client
+
+COPY target/*.jar app.jar
+
+CMD ["java", "-jar", "app.jar"]
