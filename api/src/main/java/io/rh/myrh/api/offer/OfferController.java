@@ -38,7 +38,6 @@ public class OfferController {
             case "REJECTED" -> offerStatus = Status.REJECTED;
             default -> offerStatus = null;
         }
-
         Page<Offer> page = offerService.getAllOffers(offerStatus,pageNumber, size);
         offersResponse.setSuccess(true);
         offersResponse.setMessage("Offers retrieved successfully");

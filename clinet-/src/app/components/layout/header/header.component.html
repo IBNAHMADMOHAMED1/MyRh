@@ -1,0 +1,87 @@
+<!-- Start Navbar Area -->
+<header id="header">
+    <div class="crake-nav marketing-navbar">
+        <div class="container">
+            <nav class="navbar navbar-expand-md navbar-light">
+                <a 
+                
+                class="navbar-brand" routerLink="/">
+                    <h1 style="color: rgb(24, 23, 23); font-size: 30px; font-weight: 700; ">
+                    My <span style="color: #FF8A73;">Rh</span>
+                    </h1>
+                </a>
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse mean-menu" id="navbarSupportedContent">
+                    <ul class="navbar-nav nav ms-auto">
+                       
+                        <!-- page d'accueil -->
+                        <li><a routerLink="/" [routerLinkActiveOptions]="{exact: true}" routerLinkActive="active">Home</a></li>
+
+                        <li><a routerLink="/about-us" routerLinkActive="active">About Us</a></li>
+                        <li *ngIf="!isAuthenticated " ><a routerLink="/jobs" routerLinkActive="active">Jobs</a></li>
+
+                        <li class="nav-item"><a routerLink="contact-us" class="nav-link" routerLinkActive="active">Contact</a></li>
+                        <li *ngIf="isAuthenticated ">
+                            <a 
+                            *ngIf="whoIsLoggedIn == 'company'"
+                            routerLink="/create-offer" routerLinkActive="active">Create Offer</a>
+                        <li>
+                        <li *ngIf="isAuthenticated ">
+                            <a 
+                            *ngIf="whoIsLoggedIn == 'agent'" routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
+                        <li>
+                    </ul>
+                </div>
+
+                    <div class="mr-auto others-option">
+                        <ul class="d-flex align-items-center gap-3" *ngIf="!isAuthenticated ">
+                            <li>
+                                <a routerLink="/login" class="btn btn-primary " routerLinkActive="active">Login</a>
+                            </li>
+                            <li>
+                                <a routerLink="/signup" class="btn" routerLinkActive="active">Sing Up</a>
+                            </li>
+                        </ul>
+                        <!-- if who = company  -->
+                        <ul class="d-flex align-items-center gap-3" *ngIf="isAuthenticated ">
+                            <li>
+                                <a class="btn"
+                                (click)="logout()"
+                                style="background-color: #e23e1d !important; color: white;" routerLinkActive="active">Logout</a>
+                            </li>
+                        </ul>
+
+
+                    </div>
+                <div class="mr-auto others-option">
+                    <ul class="navbar-nav">
+                        <li class="header-search-box">
+                            <a href="javascript:void(0)" id="header-search-main" title="Search">
+                                <i class="icofont-search-2"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </div>
+</header>
+<!-- End Navbar Area -->
+
+<!-- <app-sidebar></app-sidebar> -->
+
+<!-- Start Search Box -->
+<div id="header-search" class="header-search">
+    <button type="button" class="close">×</button>
+    <form class="header-search-form">
+        <input type="search" value="" placeholder="Type here........" />
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+</div>
+<!-- End Search Box -->
+
+<!-- Start button login and sign -->

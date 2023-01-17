@@ -1,0 +1,78 @@
+<h1>Create Offer</h1>
+<div *ngIf="isErorr">
+    <app-alert [message]="'Sommething went wrong!'
+    " [type]="'danger'"></app-alert>
+</div>
+<div *ngIf="isSuccess">
+    <app-alert [message]="'Offer created successfully!'
+    " [type]="'success'"></app-alert>
+</div>
+<form [formGroup]="offerForm" (ngSubmit)="onSubmit()" fxLayout="column" fxLayoutGap="10px" class="example-container">
+    <mat-form-field appearance="fill" floatLabel="always">
+        <mat-label>Title</mat-label>
+        <input matInput placeholder="Title" formControlName="title" required />
+        <mat-error *ngIf="offerForm.get('title').hasError('required')">Title is <strong>required</strong></mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="fill" floatLabel="always">
+        <mat-label>Salary</mat-label>
+        <input matInput placeholder="Salary" formControlName="salary" required type="number" min="0" max="1000000" />
+        <mat-error *ngIf="offerForm.get('salary').hasError('required')">Salary is <strong>required</strong></mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="fill" floatLabel="always">
+        <mat-label>Education Level</mat-label>
+        <mat-select formControlName="education_level" required placeholder="Select Education Level">
+            <mat-option *ngFor="let education of educations" [value]="education.name">
+                {{ education.name }}
+            </mat-option>
+        </mat-select>
+        <mat-error *ngIf="offerForm.get('education_level').hasError('required')">Education Level is
+            <strong>required</strong></mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="fill" floatLabel="always">
+        <mat-label>Domain</mat-label>
+        <input type="text" matInput placeholder="Domain" [matAutocomplete]="auto" formControlName="domain" required />
+        <mat-autocomplete #auto="matAutocomplete">
+            <mat-option *ngFor="let domain of domains" [value]="domain">{{
+                domain
+                }}</mat-option>
+        </mat-autocomplete>
+        <mat-error *ngIf="offerForm.get('domain').hasError('required')">Domain is <strong>required</strong></mat-error>
+    </mat-form-field>
+
+
+    <!-- localisation autocomplete -->
+    <mat-form-field appearance="fill" floatLabel="always">
+        <mat-label>Localisation</mat-label>
+        <input type="text" matInput placeholder="Localisation" [matAutocomplete]="autoLocalisation"
+            formControlName="localisation" required />
+        <mat-autocomplete #autoLocalisation="matAutocomplete">
+            <mat-option *ngFor="let localisation of localisations" [value]="localisation.name">
+                {{ localisation.name }}
+            </mat-option>
+        </mat-autocomplete>
+        <mat-error *ngIf="offerForm.get('localisation').hasError('required')">Localisation is
+            <strong>required</strong></mat-error>
+    </mat-form-field>
+
+
+    <!-- description textarea -->
+    <mat-form-field appearance="fill" floatLabel="always">
+        <mat-label>Description</mat-label>
+        <textarea matInput placeholder="Description" formControlName="description" required></textarea>
+        <mat-error *ngIf="offerForm.get('description').hasError('required')">Description is
+            <strong>required</strong></mat-error>
+    </mat-form-field>
+
+
+
+    <div fxLayout="row" fxLayoutAlign="end" style="
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-end;
+            gap: 20px;
+        ">
+        <button mat-raised-button color="primary" type="submit" [disabled]="offerForm.invalid">
+            Create Offer
+        </button>
+    </div>
+</form>

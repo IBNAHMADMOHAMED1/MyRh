@@ -1,0 +1,171 @@
+<!-- Start Page Title Area -->
+<section class="page-title-banner">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h2>Lis of Jobs</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="shape1"><img src="assets/img/shape1.png" alt="img" /></div>
+    <div class="shape2"><img src="assets/img/shape2.png" alt="img" /></div>
+    <div class="shape3"><img src="assets/img/shape3.png" alt="img" /></div>
+    <div class="shape6"><img src="assets/img/shape6.png" alt="img" /></div>
+    <div class="shape8 rotateme">
+        <img src="assets/img/shape8.svg" alt="shape" />
+    </div>
+    <div class="shape9"><img src="assets/img/shape9.svg" alt="shape" /></div>
+</section>
+<!-- End Page Title Area -->
+
+<!-- Start Blog Area -->
+<section class="blog-area blog-section ptb-100">
+    <div class="container">
+        <!-- Search bar -->
+        <form [formGroup]="offerForm" (ngSubmit)="onSubmit()" >
+        <div class="row">
+            <div class="col-lg-12 col-md-12">
+                <div class="single-blog-post">
+                    <div class="blog-post-content">
+                        <h3>
+                            <a>Search</a>
+                        </h3>
+                        <div class="row">
+                            <div class="col-lg-4 col-md-4">
+                                <mat-form-field appearance="fill" floatLabel="always" class="w-100">
+                                    <mat-label>Title</mat-label>
+                                    <input matInput placeholder="Title" formControlName="title"  />
+                                </mat-form-field>
+                            </div>
+                            <div class="col-lg-4 col-md-4">
+                                    <mat-form-field appearance="fill" floatLabel="always" class="w-100">
+                                        <mat-label>Localisation</mat-label>
+                                        <input type="text" matInput placeholder="Localisation" [matAutocomplete]="autoLocalisation"
+                                            formControlName="localisation"  />
+                                        <mat-autocomplete #autoLocalisation="matAutocomplete">
+                                            <mat-option *ngFor="let localisation of localisations" [value]="localisation.name">
+                                                {{ localisation.name }}
+                                            </mat-option>
+                                        </mat-autocomplete>
+            
+                                    </mat-form-field>
+                            </div>
+                            <div class="col-lg-4 col-md-4">
+                                <div class="form-group mb-0">
+                        
+                                    <mat-form-field appearance="fill" floatLabel="always" class="w-100">
+                                        <mat-label>Domain</mat-label>
+                                        <input type="text" matInput placeholder="Domain" [matAutocomplete]="auto" formControlName="domain"  />
+                                        <mat-autocomplete #auto="matAutocomplete">
+                                            <mat-option *ngFor="let domain of domains" [value]="domain">{{
+                                                domain
+                                                }}</mat-option>
+                                        </mat-autocomplete>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            
+                        </div>
+                        <!-- apply button --> 
+                        <div class="mt-3 d-flex justify-content-end">
+                            <div class="col-lg-12 col-md-12 d-flex justify-content-end">
+                                <div class="form-group mb-0">
+                                    <button type="submit" class="btn btn-primary">Search</button>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+
+
+
+
+            <div class="row">
+                <!-- no jobs -->
+                <div *ngIf="jobs.length == 0" class="col-lg-12 col-md-12">
+                    <div class="single-blog-post">
+                        <div class="blog-post-content">
+                            <h3>
+                                <a>No Jobs Found</a>
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6" *ngFor="let job of jobs">
+                    <div class="single-blog-post">
+                        <a (click)="goToJobDetails(job.id)" class="post-image">
+                            <img 
+                            style="width: 100%; height: 250px; object-fit: cover;"
+                            [src]="job.company.imageUri" alt="job-image" />
+                        </a>
+                        <div class="blog-post-content">
+                            <div class="article-content">
+                                <ul  class="category">
+                                    <li>
+                                        <i class="icofont-company"></i>
+                                        <a> {{
+                                            job.company.name 
+                                            }} </a>
+                                    </li>
+                                    <li>
+                                    <i class="icofont-location-pin"></i>
+                                        <a> {{ 
+                                            job.location ? job.location : 'Not specified' 
+                                            }} </a>
+                                    </li>
+                                    <li>
+                                        <a>
+                                            <i class="icofont-eye-alt"></i>
+                                            {{ job.views }}
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <h3>
+                                <a (click)="goToJobDetails(job.id)">
+                                    {{ job.title }}
+                                </a>
+                            </h3>
+                            <p>{{ job.description }}</p>
+                            <!-- views -->
+                            <ul class="post-footer">
+                                
+                            </ul>
+
+                            <a (click)="goToJobDetails(job.id)" class="read-more-btn">Read More
+                                <i class="icofont-rounded-double-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12 col-md-12">
+                    <div class="pagination-area">
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination justify-content-center">
+                                <li class="page-item">
+                                    <a class="page-link" (click)="previousPage()"><i
+                                            class="icofont-double-left"></i></a>
+                                </li>
+                                <li class="page-item" *ngFor="let page of pages; let i = index"
+                                    [class.active]="currentPage === page">
+                                    <a class="page-link" (click)="goToPage(page)">{{page}}</a>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link" (click)="nextPage()"><i class="icofont-double-right"></i></a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+</section>
+<!-- End Blog Area -->

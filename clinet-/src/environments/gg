@@ -1,0 +1,42 @@
+ .idea/
+        api/.gitignore
+        api/.mvn/
+        api/mvnw
+        api/mvnw.cmd
+        api/pom.xml
+        api/src/main/java/io/rh/myrh/MyrhApplication.java
+        api/src/main/java/io/rh/myrh/entity/
+        api/src/main/java/io/rh/myrh/provider/
+        api/src/main/java/io/rh/myrh/repository/
+        api/src/main/java/io/rh/myrh/service/
+        api/src/main/resources/
+        api/src/test/
+
+ git add .\api\.idea\ 
+ git commit -m "Initial commit"
+ git add .\api\.mvn\
+     git commit -m "Initial commit"
+     git add .\api\mvnw
+     git commit -m "Initial commit"
+     git add .\api\mvnw.cmd
+     git commit -m "Initial commit"
+     git add .\api\pom.xml
+     git commit -m "Initial commit"
+     git add .\api\src\main\java\io\rh\myrh\MyrhApplication.java
+     git commit -m "Initial commit"
+     git add .\api\src\main\java\io\rh\myrh\entity\
+     git commit -m "Entity classes"
+     git add .\api\src\main\java\io\rh\myrh\provider\
+     git commit -m "Provider Jwt"
+     git add .\api\src\main\java\io\rh\myrh\repository\
+     git commit -m "Repository "
+     git add .\api\src\main\java\io\rh\myrh\service\
+     git commit -m "Service"
+     git add .\api\src\main\resources\
+     git commit -m "Initial commit"
+     git add .\api\src\test\
+     git commit -m "Initial commit"
+     
+
+
+

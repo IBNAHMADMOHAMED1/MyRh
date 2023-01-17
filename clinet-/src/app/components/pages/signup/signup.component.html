@@ -1,0 +1,112 @@
+<!-- Start Page Title Area -->
+<section class="page-title-banner">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h2>Signup</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="shape1"><img src="assets/img/shape1.png" alt="img" /></div>
+    <div class="shape2"><img src="assets/img/shape2.png" alt="img" /></div>
+    <div class="shape3"><img src="assets/img/shape3.png" alt="img" /></div>
+    <div class="shape6"><img src="assets/img/shape6.png" alt="img" /></div>
+    <div class="shape8 rotateme">
+        <img src="assets/img/shape8.svg" alt="shape" />
+    </div>
+    <div class="shape9"><img src="assets/img/shape9.svg" alt="shape" /></div>
+</section>
+<!-- End Page Title Area -->
+
+<!-- Start Signup Area -->
+<section class="signup-area ptb-100">
+    <div class="container">
+        <div class="row h-100 justify-content-center align-items-center">
+            <!-- <div class="col-lg-6 col-md-4">
+                <div class="signup-image">
+                    <img src="assets/img/marketing.png" alt="image" />
+                </div>
+            </div> -->
+
+            <div class="col-lg-12 col-md-12">
+                <div class="signup-form">
+                    <h3>Create your Account</h3>
+                    <div *ngIf="isError">
+                        <app-alert [message]="'Your message here'" [type]="'danger'"></app-alert>
+                    </div>
+                    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form-container">
+                        <div class="row h-100 justify-content-center align-items-center">
+                            <div class="col-lg-6 col-md-12">
+                                <div class="form-group">
+                                    <label for="name">name</label>
+                                    <input type="text" class="form-control" id="name" formControlName="name"
+                                        placeholder="Enter your name" />
+                                    <app-invalid-feedback [control]="f.name" label="name"></app-invalid-feedback>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="email">Email</label>
+                                    <input type="email" class="form-control" id="email" formControlName="email"
+                                        placeholder="Enter your email" />
+                                    <app-invalid-feedback [control]="f.email" label="email"></app-invalid-feedback>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="password">Password</label>
+                                    <input type="password" class="form-control" id="password" formControlName="password"
+                                        placeholder="Enter your password" />
+                                    <app-invalid-feedback [control]="f.password" label="password"></app-invalid-feedback>
+                                </div>
+
+                            </div>
+                            <div class="col-lg-6 col-md-12">
+                                <div class="form-group">
+                                    <label for="phoneNumber">Phone Number</label>
+                                    <input type="text" class="form-control" id="phoneNumber"
+                                        formControlName="phoneNumber" placeholder="Enter your phone number" />
+                                    <app-invalid-feedback [control]="f.phoneNumber" label="phone number"></app-invalid-feedback>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="address">Address</label>
+                                    <input type="text" class="form-control" id="address" formControlName="address"
+                                        placeholder="Enter your address" />
+                                    <app-invalid-feedback [control]="f.address" label="address"></app-invalid-feedback>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="confirmPassword">Confirm Password</label>
+                                    <input type="password" class="form-control" id="confirmPassword"
+                                        formControlName="confirmPassword" placeholder="Enter your confirm password" />
+                                    <app-invalid-feedback [control]="f.confirmPassword" label="confirm password"></app-invalid-feedback>
+                                </div>
+
+                            </div>
+                            <div class="form-group">
+                                <label for="image">Image</label>
+                                <input type="file" class="form-control" id="image" formControlName="image"
+                                    (change)="onFileChange($event)" accept="image/*" />
+                                <!-- <app-invalid-feedback [control]="f.image" label="image"></app-invalid-feedback> -->
+                            </div>
+                        </div>
+
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="checkme"
+                                />
+                            <label class="form-check-label" for="checkme">Keep me logged in</label>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">
+                            Signup Now!
+                        </button>
+                        <br />
+                        <span>Already a registered user?
+                            <a routerLink="/login">Login!</a></span>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End Signup Area -->

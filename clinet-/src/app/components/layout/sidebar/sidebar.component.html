@@ -1,0 +1,43 @@
+<mat-toolbar color="primary" class="example-toolbar">
+	<button mat-icon-button (click)="isExpanded = !isExpanded"><mat-icon>menu</mat-icon></button>
+	<h1 class="example-app-name">Dashboard</h1>
+</mat-toolbar>
+<mat-sidenav-container class="example-container" autosize>
+	<mat-sidenav #sidenav class="example-sidenav" mode="side" opened="true" (mouseenter)="mouseenter()" (mouseleave)="mouseleave()">
+		<mat-nav-list>
+			<mat-list-item (click)="showSubmenu = !showSubmenu" class="parent">
+				<span class="full-width" *ngIf="isExpanded || isShowing">Parent Menu</span>
+				<mat-icon mat-list-icon>home</mat-icon>
+				<mat-icon class="menu-button" [ngClass]="{'rotated' : showSubmenu}" *ngIf="isExpanded || isShowing">expand_more</mat-icon>
+			</mat-list-item>
+		</mat-nav-list>
+        <!-- home page -->
+        <mat-nav-list>
+            <mat-list-item (click)="homePage()" >
+                <mat-icon mat-list-icon color="primary" >pages</mat-icon> 
+                <span class="full-width" *ngIf="isExpanded || isShowing">Home</span>
+            </mat-list-item>
+        </mat-nav-list>
+        <!-- logout -->
+        <mat-nav-list>
+            <mat-list-item (click)="logout()">
+                <mat-icon mat-list-icon
+                style="color: red;"
+                >exit_to_app</mat-icon>
+                <span class="full-width" *ngIf="isExpanded || isShowing">Logout</span>
+            </mat-list-item>
+        </mat-nav-list>
+
+    <mat-nav-list>
+</mat-nav-list>
+	</mat-sidenav>
+	<div 
+        style="padding: 10px; margin-left: 10px; margin-right: 10px; margin-top: 10px; margin-bottom: 10px; border-radius: 5px; background-color: #fff;"
+        class="">
+        <app-data-table-admin></app-data-table-admin>
+	</div>
+
+</mat-sidenav-container>
+ibnhamad footer
+
+

@@ -1,0 +1,35 @@
+// Define custom styles for the modal
+@import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
+.job-modal {
+    .mat-dialog-title {
+        text-align: center;
+        font-size: 2rem;
+        font-weight: bold;
+        color: #FF8A73;
+    }
+
+    .mat-dialog-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        p {
+            font-size: 1.2rem;
+            margin: 1rem 0;
+        }
+    }
+
+    .mat-dialog-actions {
+        justify-content: center;
+
+        button {
+            background-color: #FF8A73;
+            color: #fff;
+            font-size: 1.2rem;
+
+            &:hover {
+                background-color: darken(#FF8A73, 10%);
+            }
+        }
+    }
+}

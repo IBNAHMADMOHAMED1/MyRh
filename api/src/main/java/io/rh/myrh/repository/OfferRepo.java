@@ -33,7 +33,6 @@ public interface OfferRepo extends JpaRepository<Offer, Long> {
    // @Query("SELECT o FROM Offer o WHERE o.title LIKE %:title% OR o.domain LIKE %:domain% OR o.location LIKE %:location% OR o.status LIKE %:status%")
     //Page<Offer> searchOffers(@Param("title") String title, @Param("domain") String domain, @Param("location") String location, @Param("status") Status status, Pageable pageable);
     @Query("SELECT o FROM Offer o WHERE " +
-
             "(:status IS NULL OR o.status = :status) AND " +
             "(:title IS NULL OR o.title LIKE %:title%) AND " +
             "(:domain IS NULL OR o.domain = :domain) AND " +
@@ -44,8 +43,5 @@ public interface OfferRepo extends JpaRepository<Offer, Long> {
             @Param("status") Status status,
             @Param("location") String location,
             Pageable pageable);
-
-
-
 }
 

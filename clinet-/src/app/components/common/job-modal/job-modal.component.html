@@ -1,0 +1,9 @@
+<h2 mat-dialog-title>Contact {{job.company.name}}</h2>
+<mat-dialog-content>
+    <p>Call {{job.company.phoneNo ? job.company.phoneNo : 'Not Specified'}}</p>
+    <p>Or</p>
+    <p>Send your CV to {{job.company.email ? job.company.email : 'Not Specified'}}</p>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button mat-button mat-dialog-close>Close</button>
+</mat-dialog-actions>

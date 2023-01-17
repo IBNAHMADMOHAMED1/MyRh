@@ -1,0 +1,128 @@
+
+<div class="example-container mat-elevation-z8"
+style="padding: 20px;"
+>
+<div class="d-flex justify-content-between "
+style="margin-bottom: 10px"
+>
+    <mat-form-field>
+        <input matInput (keyup)="applySearch($event.target.value)" placeholder="Search">
+    </mat-form-field>
+<div class="d-flex justify-content-between">
+<button mat-icon-button (click)="showFilter = !showFilter">
+    <mat-icon>filter_list</mat-icon>
+</button>
+<button mat-icon-button (click)="refreshTable()">
+    <mat-icon>refresh</mat-icon>
+</button>
+<button mat-icon-button style="background-color:#FF8A73; color: white;" (click)="showForm = !showForm">
+    <mat-icon>add_to_photos</mat-icon>
+</button>
+</div>
+</div>
+
+<div class="filter-popup" [ngClass]="{'open': showForm}">
+    <div class="filter-popup__content">
+        <button mat-icon-button (click)="refreshTable()" style="position: absolute; right: 10px; top: 10px;">
+            <mat-icon>close</mat-icon>
+        </button>
+        <app-form-offer>
+            
+        </app-form-offer>
+    </div>
+</div>
+
+
+<div class="filter-popup" [ngClass]="{'open': showFilter}">
+    <div class="filter-popup__content">
+        <h2>Filter by status</h2>
+        <mat-radio-group [(ngModel)]="selectedStatus">
+            <mat-radio-button value="ACCEPTED">Accepted</mat-radio-button>
+            <mat-radio-button value="PENDING">Pending</mat-radio-button>
+            <mat-radio-button value="REJECTED">Rejected</mat-radio-button>
+        </mat-radio-group>
+        <div class="filter-popup__actions"
+        style="display: flex !important; margin-top: 30px; align-items: center; gap: 10px;" 
+        >
+        <button mat-raised-button (click)="showFilter = false">Cancel</button>
+            <button mat-raised-button color="primary" (click)="filterData()">Apply Filter</button>
+        </div>
+    </div>
+</div>
+   
+    <mat-table [dataSource]="dataSource" matSort>
+
+        <!-- ID Column -->
+        <ng-container matColumnDef="id">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> ID </mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{row.id}} </mat-cell>
+        </ng-container>
+
+        <!-- title Column -->
+        <ng-container matColumnDef="title">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> title </mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{row.title}}% </mat-cell>
+        </ng-container>
+
+        <!-- domain Column -->
+        <ng-container matColumnDef="domain">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> domain </mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{row.domain}} </mat-cell>
+        </ng-container>
+
+        <!-- description Column -->
+        <!-- <ng-container matColumnDef="description">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> description </mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{row.description}} </mat-cell>
+        </ng-container> -->
+
+        <!-- salary -->
+        <ng-container matColumnDef="salary">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> salary </mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{row.salary}} Dh</mat-cell>
+        </ng-container>
+
+        <!-- education_level -->
+        <ng-container matColumnDef="education_level">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> education_level </mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{row.education_level}} </mat-cell>
+        </ng-container>
+
+        <!-- location -->
+        <ng-container matColumnDef="location">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> location </mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{row.location ? row.location : 'N/A'}} </mat-cell>
+        </ng-container>
+
+        <!-- status Column -->
+        <ng-container matColumnDef="status">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Status </mat-header-cell>
+            <mat-cell *matCellDef="let row" [style.color]="getColor(row.status)"> {{row.status}} </mat-cell>
+        </ng-container>
+
+        <!-- actions Column -->
+        <ng-container matColumnDef="actions">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Actions </mat-header-cell>
+            <mat-cell *matCellDef="let row">
+                <!-- open button -->
+                <button mat-icon-button >
+                    <mat-icon>open_in_new</mat-icon>
+                </button>
+            </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;">
+        </mat-row>
+    </mat-table>
+<mat-paginator [length]="totalItems" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
+    (page)="onPageChange($event)" aria-label="Select page">
+</mat-paginator>
+    
+    
+</div>
+
+
+<!-- Copyright 2018 Google Inc. All Rights Reserved.
+    Use of this source code is governed by an MIT-style license that
+    can be found in the LICENSE file at http://angular.io/license -->

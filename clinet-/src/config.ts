@@ -1,0 +1,13 @@
+import { environment } from './environments/environment';
+export const API_URL = environment.apiUrl;
+export const LOGIN_URL = `${API_URL}/public/auth/authenticate`;
+export const GET_ALL_OFFERS_COMPANY_URL = `${API_URL}/private/offers/company`;
+export const REGISTER_URL = `${API_URL}/public/auth/register`;
+export const CREATE_OFFER_URL = `${API_URL}/private/offer/create`;
+export const GET_OFFERS_PUBLIC_URL = `${API_URL}/public/offers`;
+export const GET_SEARCH_OFFERS_PUBLIC_URL = `${API_URL}/public/offers/search`;
+export const GET_OFFER_BY_ID_URL = `${API_URL}/public/offer`;
+export const UPDATE_VIWE_OFFER_URL = `${API_URL}/public/offer/update/view`;
+export const GET_ALL_OFFERS_ADMIN_URL = `${API_URL}/private/offers`;
+export const ACCEPT_OFFER_URL = `${API_URL}/private/offer/accept`;
+export const REJECT_OFFER_URL = `${API_URL}/private/offer/reject`;

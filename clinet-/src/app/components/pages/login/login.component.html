@@ -1,0 +1,150 @@
+<!-- Start Page Title Area -->
+<section class="page-title-banner bg-image">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h2>Login</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="shape1"><img src="assets/img/shape1.png" alt="img" /></div>
+    <div class="shape2"><img src="assets/img/shape2.png" alt="img" /></div>
+    <div class="shape3"><img src="assets/img/shape3.png" alt="img" /></div>
+    <div class="shape6"><img src="assets/img/shape6.png" alt="img" /></div>
+    <div class="shape8 rotateme">
+        <img src="assets/img/shape8.svg" alt="shape" />
+    </div>
+    <div class="shape9"><img src="assets/img/shape9.svg" alt="shape" /></div>
+</section>
+<!-- End Page Title Area -->
+
+<!-- Start Login Area -->
+<section class="login-area ptb-100">
+    <div class="container">
+        <div class="row h-100 justify-content-center align-items-center">
+            <div class="col-lg-6 col-md-12">
+                <div class="login-image">
+                    <img src="assets/img/marketing.png" alt="image" />
+                </div>
+            </div>
+
+            <div class="col-lg-6 col-md-12">
+                <div class="login-form">
+                    <div *ngIf="isError" >
+                        <app-alert [message]="'Your message here'" [type]="'danger'" ></app-alert>
+                    </div>
+
+                    <h3>Welcome Back!</h3>
+                    <p>Please login to your account.</p>
+
+                    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <input
+                                        [style]="
+                                            emailError
+                                                ? 'border: 1px solid red'
+                                                : ''
+                                        "
+                                        type="email"
+                                        formControlName="email"
+                                        class="form-control"
+                                        placeholder="Email"
+                                    />
+                                    <div
+                                        class="form-group"
+                                        *ngIf="submitted && f.email.errors"
+                                    >
+                                        <div
+                                            *ngIf="f.email.errors.required"
+                                            class="invalid-feedback"
+                                        >
+                                            Email is required
+                                        </div>
+                                        <div
+                                            *ngIf="f.email.errors.email"
+                                            class="invalid-feedback"
+                                        >
+                                            Email is not valid
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <input
+                                        [style]="
+                                            passwordError
+                                                ? 'border: 1px solid red'
+                                                : ''
+                                        "
+                                        type="password"
+                                        formControlName="password"
+                                        class="form-control"
+                                        placeholder="Password"
+                                    />
+                                    <div
+                                        class="form-group"
+                                        *ngIf="submitted && f.password.errors"
+                                    >
+                                        <div
+                                            *ngIf="f.password.errors.required"
+                                            class="invalid-feedback"
+                                        >
+                                            Password is required
+                                        </div>
+                                        <div
+                                            *ngIf="f.password.errors.minlength"
+                                            class="invalid-feedback"
+                                        >
+                                            Password must be at least 6
+                                            characters
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6">
+                                <div class="form-check">
+                                    <input
+                                        formControlName="who"
+                                        type="checkbox"
+                                        class="form-check-input"
+                                        id="checkme"
+                                    />
+                                    <label
+                                        class="form-check-label"
+                                        for="checkme"
+                                    >
+                                        Login as a Admin
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 text-end">
+                                <p class="forgot-password">
+                                    <a routerLink="/">Forgot Password?</a>
+                                </p>
+                            </div>
+
+                            <div class="col-lg-12">
+                                <button type="submit" class="btn btn-primary">
+                                    Login Now!
+                                </button>
+                                <br />
+                                <span
+                                    >New User?
+                                    <a routerLink="/signup">Sign Up!</a></span
+                                >
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End Login Area -->
